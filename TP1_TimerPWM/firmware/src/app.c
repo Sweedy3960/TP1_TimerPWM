@@ -55,6 +55,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "app.h"
 #include "bsp.h"
+#include "Mc32DriverLcd.h"
+#include "Mc32DriverAdc.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -141,14 +143,26 @@ void APP_Tasks ( void )
         /* Application's initial state. */
         case APP_STATE_INIT:                //Etat d'initialisation
         {
-            bool appInitialized = true;
-            DRV_TMR0_Start();
-        
-            if (appInitialized)
-            {
             
-                appData.state = APP_STATE_SERVICE_TASKS;
-            }
+            DRV_TMR0_Start();  // start du timer 1
+                        
+            //init du LCD
+            lcd_init();
+            lcd_bl_on();
+            lcd_gotoxy(1,1);
+            printf_lcd("TP1 PWM 2024-25");
+            lcd_gotoxy(1,2);
+            printf_lcd("Stefanelli Matteo");
+            lcd_gotoxy(1,3);
+            printf_lcd("Clauzel Aymeric");
+            
+            //init de l'AD
+            BSP_InitADC10();
+            
+            //Eteindre les leds
+            FullLedOff();         //extinction de toutes les leds
+        
+        
             break;
         }
         
@@ -191,6 +205,40 @@ void APP_TMR1_CallBack(void)
         LED0_W = 1;  
     }
 }
+/******************************************************************************/
+
+/*Fonction pour eteindre et allumer les leds (toutes les leds)*/
+
+// Prototypes :
+                  /*   void FullLedOn(void);   */
+                  /*   void FullLedOff(void);   */  
+                   /*voir dans app.h*/
+
+void FullLedOn(void)
+{
+    BSP_LEDOn(BSP_LED_0);
+    BSP_LEDOn(BSP_LED_1);
+    BSP_LEDOn(BSP_LED_2);
+    BSP_LEDOn(BSP_LED_3);
+    BSP_LEDOn(BSP_LED_4);
+    BSP_LEDOn(BSP_LED_5);
+    BSP_LEDOn(BSP_LED_6);
+    BSP_LEDOn(BSP_LED_7);  
+}
+
+ void FullLedOff(void)
+{
+    BSP_LEDOff(BSP_LED_0);
+    BSP_LEDOff(BSP_LED_1);
+    BSP_LEDOff(BSP_LED_2);
+    BSP_LEDOff(BSP_LED_3);
+    BSP_LEDOff(BSP_LED_4);
+    BSP_LEDOff(BSP_LED_5);
+    BSP_LEDOff(BSP_LED_6);
+    BSP_LEDOff(BSP_LED_7);  
+}
+
+/*******************************************************************************
 /*******************************************************************************
  End of File
  */

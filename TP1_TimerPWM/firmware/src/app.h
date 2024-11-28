@@ -167,6 +167,8 @@ typedef struct
 void APP_Initialize ( void );
 void APP_TMR1_CallBack(void);
 
+void FullLedOn(void);           //allumage de toutes les leds
+void FullLedOff(void);         //extinction de toutes les leds
 /*******************************************************************************
   Function:
     void APP_Tasks ( void )
