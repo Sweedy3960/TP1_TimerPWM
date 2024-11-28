@@ -139,7 +139,7 @@ void APP_Tasks ( void )
     switch ( appData.state )
     {
         /* Application's initial state. */
-        case APP_STATE_INIT:
+        case APP_STATE_INIT:                //Etat d'initialisation
         {
             bool appInitialized = true;
             DRV_TMR0_Start();
@@ -151,8 +151,13 @@ void APP_Tasks ( void )
             }
             break;
         }
-
-        case APP_STATE_SERVICE_TASKS:
+        
+        case APP_STATE_WAIT:                //Etat d'attente 
+        {
+            break;
+        }
+        
+        case APP_STATE_SERVICE_TASKS:       //Etat d'execution
         {
         
             break;
@@ -170,7 +175,11 @@ void APP_Tasks ( void )
     }
 }
 
- 
+
+
+/*****************************************************************************/
+//Fonction de callback
+/*prototype : void APP_TMR1_CallBack(void); dans app.h*/
 void APP_TMR1_CallBack(void)
 {
     if (LED0_R == 1)
