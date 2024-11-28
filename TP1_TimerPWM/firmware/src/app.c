@@ -54,7 +54,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 #include "app.h"
-
+#include "bsp.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -142,7 +142,7 @@ void APP_Tasks ( void )
         case APP_STATE_INIT:
         {
             bool appInitialized = true;
-       
+            DRV_TMR0_Start();
         
             if (appInitialized)
             {
@@ -171,7 +171,17 @@ void APP_Tasks ( void )
 }
 
  
-
+void APP_TMR1_CallBack(void)
+{
+    if (LED0_R == 1)
+    {
+        LED0_W = 0;        
+    }
+    else
+    {
+        LED0_W = 1;  
+    }
+}
 /*******************************************************************************
  End of File
  */

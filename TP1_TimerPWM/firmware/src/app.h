@@ -113,7 +113,7 @@ typedef struct
 {
     /* The application's current state */
     APP_STATES state;
-    S_ADCResults AdcRes;
+//    S_ADCResults AdcRes;
     /* TODO: Define any additional data used by the application. */
 
 } APP_DATA;
