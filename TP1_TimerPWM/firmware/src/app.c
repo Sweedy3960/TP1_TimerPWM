@@ -56,6 +56,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "app.h"
 #include "bsp.h"
+#include "stdint.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -170,19 +171,24 @@ void APP_Tasks ( void )
         }
     }
 }
-
- 
+void APP_UpdateState(APP_STATES newState)
+{
+    appData.state = newState;
+}
 void APP_TMR1_CallBack(void)
 {
-    if (LED0_R == 1)
+    static uint8_t counter3sec;
+    
+    if (counter3sec > 150)
     {
-        LED0_W = 0;        
+        counter3sec = 149; 
     }
     else
     {
-        LED0_W = 1;  
+        counter3sec ++;
     }
 }
+      
 /*******************************************************************************
  End of File
  */
