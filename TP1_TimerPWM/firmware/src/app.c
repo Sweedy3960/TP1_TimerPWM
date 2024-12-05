@@ -56,12 +56,12 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "app.h"
 #include "bsp.h"
-<<<<<<< HEAD
+
 #include "stdint.h"
-=======
+
 #include "Mc32DriverLcd.h"
 #include "Mc32DriverAdc.h"
->>>>>>> 0b21bcd6eacb46d74bc0fe517a3a0313a1172964
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -167,7 +167,10 @@ void APP_Tasks ( void )
             //Eteindre les leds
             FullLedOff();         //extinction de toutes les leds
         
-        
+            
+            //next case 
+            appData.state = APP_STATE_WAIT;
+            
             break;
         }
         
@@ -193,19 +196,19 @@ void APP_Tasks ( void )
         }
     }
 }
-<<<<<<< HEAD
+
 void APP_UpdateState(APP_STATES newState)
 {
     appData.state = newState;
 }
-=======
+
 
 
 
 /*****************************************************************************/
 //Fonction de callback
 /*prototype : void APP_TMR1_CallBack(void); dans app.h*/
->>>>>>> 0b21bcd6eacb46d74bc0fe517a3a0313a1172964
+
 void APP_TMR1_CallBack(void)
 {
     static uint8_t counter3sec;
@@ -219,9 +222,9 @@ void APP_TMR1_CallBack(void)
         counter3sec ++;
     }
 }
-<<<<<<< HEAD
+
       
-=======
+
 /******************************************************************************/
 
 /*Fonction pour eteindre et allumer les leds (toutes les leds)*/
@@ -255,8 +258,3 @@ void FullLedOn(void)
     BSP_LEDOff(BSP_LED_7);  
 }
 
-/*******************************************************************************
->>>>>>> 0b21bcd6eacb46d74bc0fe517a3a0313a1172964
-/*******************************************************************************
- End of File
- */
