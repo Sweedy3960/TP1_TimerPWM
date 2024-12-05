@@ -149,7 +149,7 @@ void APP_Tasks ( void )
         case APP_STATE_INIT:                //Etat d'initialisation
         {
             
-            DRV_TMR0_Start();  // start du timer 1
+            //DRV_TMR0_Start();  // start du timer 1
                         
             //init du LCD
             lcd_init();
@@ -221,6 +221,7 @@ void APP_TMR1_CallBack(void)
     {
         counter3sec ++;
     }
+    
 }
 
 
