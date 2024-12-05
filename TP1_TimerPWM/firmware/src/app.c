@@ -162,7 +162,10 @@ void APP_Tasks ( void )
             //Eteindre les leds
             FullLedOff();         //extinction de toutes les leds
         
-        
+            
+            //next case 
+            appData.state = APP_STATE_WAIT;
+            
             break;
         }
         
@@ -196,14 +199,7 @@ void APP_Tasks ( void )
 /*prototype : void APP_TMR1_CallBack(void); dans app.h*/
 void APP_TMR1_CallBack(void)
 {
-    if (LED0_R == 1)
-    {
-        LED0_W = 0;        
-    }
-    else
-    {
-        LED0_W = 1;  
-    }
+    
 }
 /******************************************************************************/
 
@@ -238,7 +234,6 @@ void FullLedOn(void)
     BSP_LEDOff(BSP_LED_7);  
 }
 
-/*******************************************************************************
 /*******************************************************************************
  End of File
  */
