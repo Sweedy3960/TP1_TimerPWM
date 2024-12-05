@@ -167,7 +167,10 @@ void APP_Tasks ( void )
             //Eteindre les leds
             FullLedOff();         //extinction de toutes les leds
         
-        
+            
+            //next case 
+            appData.state = APP_STATE_WAIT;
+            
             break;
         }
         
@@ -220,6 +223,7 @@ void APP_TMR1_CallBack(void)
     }
 }
 
+
 /******************************************************************************/
 
 /*Fonction pour eteindre et allumer les leds (toutes les leds)*/
@@ -253,8 +257,3 @@ void FullLedOn(void)
     BSP_LEDOff(BSP_LED_7);  
 }
 
-/*******************************************************************************
->>>>>>> 0b21bcd6eacb46d74bc0fe517a3a0313a1172964
-/*******************************************************************************
- End of File
- */
