@@ -1,3 +1,4 @@
+
 /*******************************************************************************
   MPLAB Harmony Application Source File
   
@@ -55,8 +56,12 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "app.h"
 #include "bsp.h"
+
+#include "stdint.h"
+
 #include "Mc32DriverLcd.h"
 #include "Mc32DriverAdc.h"
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -192,15 +197,34 @@ void APP_Tasks ( void )
     }
 }
 
+void APP_UpdateState(APP_STATES newState)
+{
+    appData.state = newState;
+}
+
+
 
 
 /*****************************************************************************/
 //Fonction de callback
 /*prototype : void APP_TMR1_CallBack(void); dans app.h*/
+
 void APP_TMR1_CallBack(void)
 {
+
+    static uint8_t counter3sec;
     
+    if (counter3sec > 150)
+    {
+        counter3sec = 149; 
+    }
+    else
+    {
+        counter3sec ++;
+    }
+
 }
+
 /******************************************************************************/
 
 /*Fonction pour eteindre et allumer les leds (toutes les leds)*/
@@ -234,6 +258,4 @@ void FullLedOn(void)
     BSP_LEDOff(BSP_LED_7);  
 }
 
-/*******************************************************************************
- End of File
- */
+
