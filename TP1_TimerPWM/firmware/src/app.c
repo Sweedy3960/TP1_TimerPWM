@@ -211,7 +211,10 @@ void APP_UpdateState(APP_STATES newState)
 
 void APP_TMR1_CallBack(void)
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> d92f843a6d20e6273397c7372c402d12c7ff9762
     static uint8_t counter3sec;
     
     if (counter3sec > 150)
@@ -222,9 +225,15 @@ void APP_TMR1_CallBack(void)
     {
         counter3sec ++;
     }
+<<<<<<< HEAD
 
 }
 
+=======
+}
+
+
+>>>>>>> d92f843a6d20e6273397c7372c402d12c7ff9762
 /******************************************************************************/
 
 /*Fonction pour eteindre et allumer les leds (toutes les leds)*/
@@ -258,4 +267,7 @@ void FullLedOn(void)
     BSP_LEDOff(BSP_LED_7);  
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d92f843a6d20e6273397c7372c402d12c7ff9762

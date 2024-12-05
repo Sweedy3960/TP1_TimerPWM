@@ -6,7 +6,11 @@
 #     Harmony version: 2.06
 #
 #
+<<<<<<< HEAD
 # from $HARMONY_VERSION_PATH\apps\MINF\TP\TP1_TimerPWM_ACL_MSI\TP1_TimerPWM\firmware\TP1_TimerPWMb.hconfig
+=======
+# from $HARMONY_VERSION_PATH\apps\MINF\TP1_TimerPWM_ACL_MSI\TP1_TimerPWM\firmware\TP1_TimerPWMb.hconfig
+>>>>>>> d92f843a6d20e6273397c7372c402d12c7ff9762
 #
 CONFIG_APP_INSTANCES=1
 #
@@ -16,7 +20,11 @@ CONFIG_APP_MENU_IDX0=y
 CONFIG_APP_NAME_0="app"
 CONFIG_APP_AUTO_GENERATE_CODE0=n
 #
+<<<<<<< HEAD
 # from $HARMONY_VERSION_PATH\apps\MINF\TP\TP1_TimerPWM_ACL_MSI\TP1_TimerPWM\firmware\TP1_TimerPWMb.hconfig
+=======
+# from $HARMONY_VERSION_PATH\apps\MINF\TP1_TimerPWM_ACL_MSI\TP1_TimerPWM\firmware\TP1_TimerPWMb.hconfig
+>>>>>>> d92f843a6d20e6273397c7372c402d12c7ff9762
 #
 CONFIG_USE_EXCEPTION_HANDLER=y
 CONFIG_EXCEPTION_USE_SYS_DEBUG=y
