@@ -16,7 +16,7 @@
 /*--------------------------------------------------------*/
 
 #include <stdint.h>
-
+#include "Mc32DriverAdc.h"
 
 
 /*--------------------------------------------------------*/
@@ -39,6 +39,6 @@ void GPWM_GetSettings(S_pwmSettings *pData);	// Obtention vitesse et angle
 void GPWM_DispSettings(S_pwmSettings *pData);	// Affichage
 void GPWM_ExecPWM(S_pwmSettings *pData);		// Execution PWM et gestion moteur.
 void GPWM_ExecPWMSoft(S_pwmSettings *pData);		// Execution PWM software.
-
+int Sweepingmoy(S_ADCResults *AdcRes,char chan);
 
 #endif

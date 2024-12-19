@@ -58,7 +58,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "bsp.h"
 
 #include "stdint.h"
-
+#include "gestPWM.h"
 #include "Mc32DriverLcd.h"
 #include "Mc32DriverAdc.h"
 
@@ -67,7 +67,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-
+S_pwmSettings PWMData;      // pour les settings
 // *****************************************************************************
 /* Application Data
 
@@ -148,7 +148,7 @@ void APP_Tasks ( void )
         /* Application's initial state. */
         case APP_STATE_INIT:                //Etat d'initialisation
         {
-            
+            GPWM_Initialize(&PWMData);
             DRV_TMR0_Start();  // start du timer 1
                         
             //init du LCD
@@ -212,15 +212,18 @@ void APP_UpdateState(APP_STATES newState)
 void APP_TMR1_CallBack(void)
 {
     static uint8_t counter3sec;
-    
+ 
     if (counter3sec > 150)
     {
+        GPWM_GetSettings(&PWMData);
+        GPWM_DispSettings(&PWMData);
         counter3sec = 149; 
     }
     else
     {
         counter3sec ++;
     }
+    
 }
 
 
