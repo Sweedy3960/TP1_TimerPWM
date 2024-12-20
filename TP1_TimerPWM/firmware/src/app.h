@@ -59,6 +59,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system_config.h"
 #include "system_definitions.h"
 
+#include "Mc32DriverAdc.h"
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -113,7 +115,6 @@ typedef struct
 {
     /* The application's current state */
     APP_STATES state;
-//    S_ADCResults AdcRes;
     /* TODO: Define any additional data used by the application. */
 
 } APP_DATA;
@@ -167,6 +168,9 @@ typedef struct
 void APP_Initialize ( void );
 void APP_TMR1_CallBack(void);
 
+void APP_UpdateState ( APP_STATES NewState ) ;
+
+ void LCD_CLEARSCREEN (void);
 void FullLedOn(void);           //allumage de toutes les leds
 void FullLedOff(void);         //extinction de toutes les leds
 /*******************************************************************************

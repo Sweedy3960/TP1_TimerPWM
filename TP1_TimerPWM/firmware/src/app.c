@@ -56,9 +56,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "app.h"
 #include "bsp.h"
-
+#include "gestPWM.h"
 #include "stdint.h"
-
 #include "Mc32DriverLcd.h"
 #include "Mc32DriverAdc.h"
 
@@ -138,7 +137,7 @@ void APP_Initialize ( void )
   Remarks:
     See prototype in app.h.
  */
-
+static S_pwmSettings PWMData;
 void APP_Tasks ( void )
 {
 
@@ -148,9 +147,12 @@ void APP_Tasks ( void )
         /* Application's initial state. */
         case APP_STATE_INIT:                //Etat d'initialisation
         {
-            
-            DRV_TMR0_Start();  // start du timer 1
-                        
+             
+            //start des timers et OC + pont en H 
+            GPWM_Initialize(&PWMData);
+   
+            DRV_TMR0_Start();
+                     
             //init du LCD
             lcd_init();
             lcd_bl_on();
@@ -165,8 +167,7 @@ void APP_Tasks ( void )
             BSP_InitADC10();
             
             //Eteindre les leds
-            FullLedOff();         //extinction de toutes les leds
-        
+            FullLedOff();
             
             //next case 
             appData.state = APP_STATE_WAIT;
@@ -181,12 +182,8 @@ void APP_Tasks ( void )
         
         case APP_STATE_SERVICE_TASKS:       //Etat d'execution
         {
-        
             break;
-        }
-
-        /* TODO: implement your application state machine.*/
-        
+        }        
 
         /* The default state should never be executed. */
         default:
@@ -216,6 +213,10 @@ void APP_TMR1_CallBack(void)
     if (counter3sec > 150)
     {
         counter3sec = 149; 
+            //Séquence d'appel de fonctions
+        GPWM_GetSettings(&PWMData);     //Obtention vitesse et angle
+        GPWM_DispSettings(&PWMData);    //Affichage
+        GPWM_ExecPWM(&PWMData);         //Execution PWM et gestion moteur
     }
     else
     {
@@ -256,4 +257,20 @@ void FullLedOn(void)
     BSP_LEDOff(BSP_LED_6);
     BSP_LEDOff(BSP_LED_7);  
 }
+ 
+ 
+ /*****************************************************************************/
+ /*Fonction pour clear l'ecran en entier*/
 
+// Prototypes :
+                  /*   void LCD_CLEARSCREEN (void);   */
+                            /*voir dans app.h*/
+ 
+ void LCD_CLEARSCREEN (void)
+ {
+     lcd_ClearLine(1);
+     lcd_ClearLine(2);
+     lcd_ClearLine(3);
+     lcd_ClearLine(4);     
+             
+ }
