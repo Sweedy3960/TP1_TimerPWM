@@ -62,14 +62,14 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system/common/sys_common.h"
 #include "app.h"
 #include "system_definitions.h"
-
+#include "gestPWM.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: System Interrupt Vector Functions
 // *****************************************************************************
 // *****************************************************************************
 
- 
+S_pwmSettings pData; 
 
 void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
 {
@@ -86,7 +86,17 @@ void __ISR(_TIMER_3_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance2(void)
 }
 void __ISR(_TIMER_4_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance3(void)
 {
-    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_4);
+    // Allume la LED BSP_LED_1 pendant l'exécution de la PWM logiciel
+    BSP_LEDOn(BSP_LED_1);
+
+    // Exécute la PWM logiciel
+    GPWM_ExecPWMSoft(&pData);
+
+    // Éteint la LED BSP_LED_1 après l'exécution de la PWM logiciel
+    BSP_LEDOff(BSP_LED_1);
+
+    // Efface le drapeau d'interruption du Timer 4
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_TIMER_4);
 }
  
  /*******************************************************************************

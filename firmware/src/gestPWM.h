@@ -22,8 +22,14 @@
 /*--------------------------------------------------------*/
 // Définition des fonctions prototypes
 /*--------------------------------------------------------*/
-
-
+#define ORDONEEPRG 198
+#define OFFSETORIG 99
+#define MAXVALAD 1023
+#define VAL_MAX_TIMER2 1999
+#define DIVISION 100
+#define DELTA_VALEUR_LARGEUR_IMPULSION 4500
+#define ANGLE_ABS 180
+#define VAL_LARGEUR_IMPULSION_06 1500
 typedef struct {
     uint8_t absSpeed;    // vitesse 0 à 99
     uint8_t absAngle;    // Angle  0 à 180
@@ -39,6 +45,6 @@ void GPWM_GetSettings(S_pwmSettings *pData);	// Obtention vitesse et angle
 void GPWM_DispSettings(S_pwmSettings *pData);	// Affichage
 void GPWM_ExecPWM(S_pwmSettings *pData);		// Execution PWM et gestion moteur.
 void GPWM_ExecPWMSoft(S_pwmSettings *pData);		// Execution PWM software.
-int Sweepingmoy(S_ADCResults *AdcRes,char chan);
+int Sweepingmoy(S_ADCResults *AdcRes,int chan);
 
 #endif
