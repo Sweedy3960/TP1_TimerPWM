@@ -216,6 +216,7 @@ void APP_TMR1_CallBack(void)
     {
         GPWM_GetSettings(&PWMData);
         GPWM_DispSettings(&PWMData);
+        GPWM_ExecPWM(&PWMData);
         counter3sec = 149; 
     }
     else

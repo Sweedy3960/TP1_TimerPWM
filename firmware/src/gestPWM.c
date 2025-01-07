@@ -48,22 +48,29 @@ void GPWM_GetSettings(S_pwmSettings *pData)
     S_ADCResults AdcRes;
     // Lecture du convertisseur AD
     AdcRes = BSP_ReadAllADC();
+    
     pData->SpeedSetting = ((abs(((float)Sweepingmoy(&AdcRes,0)/MAXVALAD)*ORDONEEPRG))-OFFSETORIG);
-    //pData->SpeedSetting = ((abs(((float)AdcRes.Chan0/1023)*198))-99);    // vitesse 0 à 99
     pData->absSpeed =abs( pData->SpeedSetting);
-   // pData.absAngle;    // Angle  0 à 180
-    //pData.AngleSetting; // consigne angle  -90 à +90
+    
+    pData->absAngle = (((float)Sweepingmoy(&AdcRes,1)*ANGLE_ABS)/MAXVALAD);    // Angle  0 à 180
+    pData->AngleSetting = pData->absAngle-MAXANGLE; // consigne angle  -90 à +90
+  
 }
+
 int Sweepingmoy(S_ADCResults *AdcRes,int chan)
 {
-    static int buff[2][11] = {{0}}; 
+    static int buff1[11] = {0}; 
+    static int buff2[11] = {0}; 
+    //static int buff[2][11] = {{0}}; 
     static int iterator = 0;
     //static int firstTimeSincePowerUp = 0;
     int i;
 
     // Stocker la valeur dans le buffer adéquat
-    buff[chan][iterator] = (chan) ? AdcRes->Chan0 : AdcRes->Chan1;
-
+   //buff[chan][iterator] = (chan) ? AdcRes->Chan0 : AdcRes->Chan1;
+    buff2[iterator] = AdcRes->Chan1;
+    buff1[iterator] = AdcRes->Chan0;
+   
     // Incrémenter l'itérateur et gérer le retour à zéro
     iterator++;
     if (iterator == 10)
@@ -75,14 +82,17 @@ int Sweepingmoy(S_ADCResults *AdcRes,int chan)
     // Calculer la moyenne si buffer full
     //if (firstTimeSincePowerUp)
     //{
-        buff[chan][10] = 0; // Réinitialiser la somme avant de la recalculer
-        for (i = 0; i < 10; i++) // On doit parcourir 10 éléments
+        buff1[10] = 0; // Réinitialiser la somme avant de la recalculer
+        buff2[10] = 0;
+        for (i = 0; i < 10; i++) 
         {
-            buff[chan][10] += buff[chan][i]; // Somme des 10 valeurs
+            buff1[10] += buff1[i]; 
+            buff2[10] += buff2[i];
         }
     //}
-    return (buff[chan][10] / 10);//(firstTimeSincePowerUp) ? (buff[chan][10] / 10) : 0;
+    return (chan)? (buff1[10] / 10):(buff2[10] / 10);//(buff[chan][10] / 10);//(firstTimeSincePowerUp) ? (buff[chan][10] / 10) : 0;
 }
+
  
 // Affichage des information en exploitant la structure
 void GPWM_DispSettings(S_pwmSettings *pData)
@@ -90,62 +100,62 @@ void GPWM_DispSettings(S_pwmSettings *pData)
     
     lcd_gotoxy(1,2);
     printf_lcd("SpeedSetting: %4d", pData->SpeedSetting);
+   
+    lcd_ClearLine(3);
     lcd_gotoxy(1,3);
-    //lcd_ClearLine(3);
     printf_lcd("AbsSpeed: %3d",  pData->absSpeed);
     lcd_gotoxy(1,4);
+    printf_lcd("AbsAnlge: %3d",  pData->AngleSetting);
+  
     
 }
  
-// Execution PWM et gestion moteur à partir des info dans structure
+
 void GPWM_ExecPWM(S_pwmSettings *pData)
 {
-  //Fait tourner le moteur dans le sens horaire 
+ 
     if(pData->SpeedSetting > 0)
     {
         AIN1_HBRIDGE_W = 1;
         AIN2_HBRIDGE_W = 0;
     }
-    //Fait tourner le moteur dans le sens antihoraire 
     else if (pData->SpeedSetting < 0)
     {
         AIN1_HBRIDGE_W = 0;
         AIN2_HBRIDGE_W = 1;
     }
-    //Fait que le moteur ne tourne pas
     else 
     {
         STBY_HBRIDGE_W = 0; 
     }
     
-    //Calcul de la largueur d'impulsion pour le moteur DC
+    //DC
     PLIB_OC_PulseWidth16BitSet(OC_ID_2, (pData->absSpeed*VAL_MAX_TIMER2)/DIVISION);
-    //Calcul de la largeur d'impulsion pour le servomoteur 
-    PLIB_OC_PulseWidth16BitSet(OC_ID_3, (((pData->absAngle*DELTA_VALEUR_LARGEUR_IMPULSION)/ANGLE_ABS)+VAL_LARGEUR_IMPULSION_06));
+    //servo
+    PLIB_OC_PulseWidth16BitSet(OC_ID_3, (((pData->absAngle)*(MAXTICK_TIMER3/ANGLE_ABS))));
 }
  
 // Execution PWM software
 void GPWM_ExecPWMSoft(S_pwmSettings *pData)
 {
-    static uint8_t compteurRpc = 0;
+    static uint8_t cnt = 0;
 
-    // Si la valeur absolue de la vitesse est supérieure au compteurRpc, éteindre la LED
-    if (pData->absSpeed > compteurRpc)
+    // Si la valeur absolue de la vitesse est supérieure au compteur, éteindre la LED
+    if (pData->absSpeed > cnt)
     {
         BSP_LEDOff(BSP_LED_2);
     }
     else
     {
-        // Sinon, allumer la LED
+       
         BSP_LEDOn(BSP_LED_2);
     }
 
-    // Incrémente le compteurRpc
-    compteurRpc++;
 
-    // Remet à zéro le compteurRpc s'il dépasse la valeur 99
-    if (compteurRpc >= 99)
+    cnt++;
+
+    if (cnt >= 99)
     {
-        compteurRpc = 0;
+        cnt = 0;
     }
 }

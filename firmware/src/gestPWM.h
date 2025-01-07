@@ -27,9 +27,11 @@
 #define MAXVALAD 1023
 #define VAL_MAX_TIMER2 1999
 #define DIVISION 100
-#define DELTA_VALEUR_LARGEUR_IMPULSION 4500
 #define ANGLE_ABS 180
-#define VAL_LARGEUR_IMPULSION_06 1500
+#define VAL06MS 750
+#define MAXANGLE 90
+#define MAXTICK_TIMER3 2500
+
 typedef struct {
     uint8_t absSpeed;    // vitesse 0 à 99
     uint8_t absAngle;    // Angle  0 à 180
