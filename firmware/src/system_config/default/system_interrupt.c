@@ -77,14 +77,14 @@ void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
     //allume led 0 pour mesure 
     BSP_LEDOn(BSP_LED_0);
     //si compteur dépasse les 3 secondes 
-    if (counter3sec > 150)
+    if (counter3sec > _3STIMER)
     {   
         //appels des fonction demandés par le cdc 
         GPWM_GetSettings(&pData);
         GPWM_DispSettings(&pData);
         GPWM_ExecPWM(&pData);
         //réinitialise le compteur
-        counter3sec = 149; 
+        counter3sec = (_3STIMER-1); 
     }
     else
     {

@@ -149,17 +149,17 @@ int Sweepingmoy(S_ADCResults *AdcRes,int chan)
 void GPWM_DispSettings(S_pwmSettings *pData)
 {
     //déplacement du curseur
-    lcd_gotoxy(1,2);
+    lcd_gotoxy(C1,L2);
     //affiche valeure ded réglage de vitesse 
     printf_lcd("SpeedSetting: %4d", pData->SpeedSetting);
     //vide la ligne
-    lcd_ClearLine(3);
+    lcd_ClearLine(L3);
     //déplacement du curseur
-    lcd_gotoxy(1,3);
+    lcd_gotoxy(C1,L3);
     //affiche la vitesse absole 
     printf_lcd("AbsSpeed: %3d",  pData->absSpeed);
     //déplacement du curseur
-    lcd_gotoxy(1,4);
+    lcd_gotoxy(C1,L4);
     //Affiche la vlaeur absolue de l'angle
     printf_lcd("AbsAnlge: %3d",  pData->AngleSetting);
   
@@ -244,7 +244,7 @@ void GPWM_ExecPWMSoft(S_pwmSettings *pData)
     //incrémentation compteur
     cnt++;
     //test valeure max compteur
-    if (cnt >= 99)
+    if (cnt >= OFFSETORIG)
     {
         //remise à 0
         cnt = 0;

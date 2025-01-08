@@ -155,14 +155,14 @@ void APP_Tasks ( void )
             lcd_init();
             lcd_bl_on();
             //déplacement du curseur
-            lcd_gotoxy(1,1);
+            lcd_gotoxy(C1,L1);
             //Affichage sur ligne 1 
             printf_lcd("TP1 PWM 2024-25");
             //déplacement du curseur
-            lcd_gotoxy(1,2);
+            lcd_gotoxy(C1,L2);
             
             printf_lcd("Stefanelli Matteo");
-            lcd_gotoxy(1,3);
+            lcd_gotoxy(C1,L3);
             printf_lcd("Clauzel Aymeric");
             
             //init de l'AD
