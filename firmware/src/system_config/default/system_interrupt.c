@@ -63,39 +63,62 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "app.h"
 #include "system_definitions.h"
 #include "gestPWM.h"
+#include "bsp.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: System Interrupt Vector Functions
 // *****************************************************************************
 // *****************************************************************************
-
-S_pwmSettings pData; 
+S_pwmSettings pData;  
 
 void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
 {
+    static uint8_t counter3sec;
+    //allume led 0 pour mesure 
+    BSP_LEDOn(BSP_LED_0);
+    //si compteur dépasse les 3 secondes 
+    if (counter3sec > 150)
+    {   
+        //appels des fonction demandés par le cdc 
+        GPWM_GetSettings(&pData);
+        GPWM_DispSettings(&pData);
+        GPWM_ExecPWM(&pData);
+        //réinitialise le compteur
+        counter3sec = 149; 
+    }
+    else
+    {
+        //incrément
+        counter3sec ++;
+    }
+    //remet à 0 le flag pour libére
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_1);
-    APP_TMR1_CallBack();
+    //éteidn la led
+    BSP_LEDOff(BSP_LED_0); 
+   
 }
 void __ISR(_TIMER_2_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance1(void)
 {
+    //remet à 0 le flag
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_2);
 }
 void __ISR(_TIMER_3_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance2(void)
 {
+    //remet à 0 le flag
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_3);
 }
 void __ISR(_TIMER_4_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance3(void)
 {
-    // Allume la LED BSP_LED_1 pendant l'exécution de la PWM logiciel
+    //allume la LED 1 pour mesures
     BSP_LEDOn(BSP_LED_1);
 
     // Exécute la PWM logiciel
     GPWM_ExecPWMSoft(&pData);
 
-    // Éteint la LED BSP_LED_1 après l'exécution de la PWM logiciel
+    // Éteint la LED BSP_LED_1 après la PWM logiciel
     BSP_LEDOff(BSP_LED_1);
 
-    // Efface le drapeau d'interruption du Timer 4
+    //remet à 0 le flag
     PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_TIMER_4);
 }
  

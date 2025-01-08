@@ -66,7 +66,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-S_pwmSettings PWMData;      // pour les settings
+//S_pwmSettings PWMData;      // pour les settings
 // *****************************************************************************
 /* Application Data
 
@@ -102,7 +102,7 @@ APP_DATA appData;
 
 /* TODO:  Add any necessary local functions.
 */
-
+S_pwmSettings PWMData;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -146,16 +146,21 @@ void APP_Tasks ( void )
     {
         /* Application's initial state. */
         case APP_STATE_INIT:                //Etat d'initialisation
-        {
+        {   
+            //Initialise les params pour pwm 
             GPWM_Initialize(&PWMData);
             DRV_TMR0_Start();  // start du timer 1
                         
             //init du LCD
             lcd_init();
             lcd_bl_on();
+            //déplacement du curseur
             lcd_gotoxy(1,1);
+            //Affichage sur ligne 1 
             printf_lcd("TP1 PWM 2024-25");
+            //déplacement du curseur
             lcd_gotoxy(1,2);
+            
             printf_lcd("Stefanelli Matteo");
             lcd_gotoxy(1,3);
             printf_lcd("Clauzel Aymeric");
@@ -195,7 +200,20 @@ void APP_Tasks ( void )
         }
     }
 }
-
+/***************************************************************
+*                                                             *
+*                       APP_UpdateState                       *
+*                                                             *
+* Description : Cette fonction change l'état de la SM         *
+* structure                                                   *
+* Paramètres d'entrée : Nom/type                              *
+*   -newState : APP_STATES                                    *
+*                                             *
+*                                                             *
+* Paramètre de sortie : type                                  *
+*   -                                                      *
+*                                                             *
+***************************************************************/
 void APP_UpdateState(APP_STATES newState)
 {
     appData.state = newState;
@@ -204,27 +222,6 @@ void APP_UpdateState(APP_STATES newState)
 
 
 
-/*****************************************************************************/
-//Fonction de callback
-/*prototype : void APP_TMR1_CallBack(void); dans app.h*/
-
-void APP_TMR1_CallBack(void)
-{
-    static uint8_t counter3sec;
- 
-    if (counter3sec > 150)
-    {
-        GPWM_GetSettings(&PWMData);
-        GPWM_DispSettings(&PWMData);
-        GPWM_ExecPWM(&PWMData);
-        counter3sec = 149; 
-    }
-    else
-    {
-        counter3sec ++;
-    }
-    
-}
 
 
 /******************************************************************************/
@@ -257,6 +254,7 @@ void FullLedOn(void)
     BSP_LEDOff(BSP_LED_4);
     BSP_LEDOff(BSP_LED_5);
     BSP_LEDOff(BSP_LED_6);
-    BSP_LEDOff(BSP_LED_7);  
+    BSP_LEDOff (BSP_LED_7);
+   
 }
 

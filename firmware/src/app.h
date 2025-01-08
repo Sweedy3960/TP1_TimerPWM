@@ -95,7 +95,7 @@ typedef enum
 
 } APP_STATES;
 
-
+#define NB_LEDS 8
 // *****************************************************************************
 /* Application Data
 
